@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_product_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.common.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="categ_id" position="before">
+                <field name="product_weight" />
+                <field name="calories" />
+            </field>
+            <field name="detailed_type" position="after">
+                <field name="expiry_date" />
+            </field>
+        </field>
+     </record>
+<!--    adding a field to tree list view -->
+    <record id="view_product_list_inherit" model="ir.ui.view">
+        <field name="name">product.template.common.tree.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="list_price" position="after">
+                <field name="product_weight"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_product_search_inherit" model="ir.ui.view">
+        <field name="name">product.template.common.search.inherit</field>
+        <field name="model">product.template</field>
+        <field name="type">search</field>
+        <field name="inherit_id" ref="product.product_template_search_view" />
+        <field name="arch" type="xml">
+            <xpath expr="/search/filter[@name='inactive']" position="after">
+                <filter name="filter_to_large_meal" string="Large Meals" domain="[('product_weight', '&gt;', '200')]" />
+            </xpath>
+        </field>
+    </record>
+<!--        action window -->
+    <record id="action_menu_large_product" model="ir.actions.act_window">
+        <field name="name">action_large_product</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="context">
+            {
+            'search_default_filter_to_sell':1,
+            'search_default_filter_to_large_meal':1
+            }
+        </field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            No Large Meals  has been added
+          </p><p>
+            you can add one by pressing the New button
+          </p>
+        </field>
+
+
+     </record>
+
+    <menuitem
+        action="action_menu_large_product"
+        id="menu_item_large_meal"
+        name="Big Meals"
+        parent="sale.product_menu_catalog"
+        sequence="3"
+    />
+</odoo>
+
+
+
+
+
+
+
+
+
+
+
+

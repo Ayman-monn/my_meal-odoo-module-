@@ -1,0 +1,173 @@
+<odoo>
+  <data>
+
+<!--    meal creation page when press New-->
+    <record id="partner_meal_form_view" model="ir.ui.view">
+      <field name="name">partner.meal.form.view</field>
+      <field name="model">partner.meal</field>
+      <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="meal_name" />
+            <field name="partner_id" />
+            <field name="meal_datetime" />
+            <field name="meal_note" />
+          </group>
+          <notebook>
+            <page name="meal item" string="الوجبات">
+                <field name="item_ids" widget="one2many_list">
+                  <tree editable="bottom">
+                    <field name="product_id" />
+                    <field name="meals_numbers" />
+                    <field name="product_price" />
+                    <field name="calories" />
+                    <field name="weight" />
+                    <field name="meal_item_price" sum="Total Price" />
+                  </tree>
+                </field>
+            </page>
+          </notebook>
+          <group>
+            <field name="total_price" />
+          </group>
+        </form>
+      </field>
+    </record>
+
+    <!--    tree view of root page and all meals in my meal app -->
+    <record id="partner_meal_tree_view" model="ir.ui.view">
+      <field name="name">partner.meal.tree.view</field>
+      <field name="model">partner.meal</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="meal_name" />
+          <field name="partner_id" />
+          <field name="meal_datetime" />
+          <field name="meal_note" />
+          <field name="total_price" sum="Total Price" />
+        </tree>
+
+      </field>
+    </record>
+<!-- filters for search  -->
+    <record id="partner_meal_search_view" model="ir.ui.view">
+      <field name="name">partner.meal_search_view</field>
+      <field name="model">partner.meal</field>
+      <field name="type">search</field>
+      <field name="arch" type="xml">
+        <search string="Meals">
+          <filter string="وجبات الفطور" name="filter_to_breakfast" domain="[('meal_name', '=', 'breakfast')]" />
+          <filter string="وجبات الغداء" name="filter_to_lunch" domain="[('meal_name', '=', 'lunch')]" />
+          <filter string="وجبات العشاء" name="filter_to_dinner" domain="[('meal_name', '=', 'dinner')]" />
+        </search>
+      </field>
+    </record>
+
+<!--    all meals action  -->
+    <record id="all_meal_action" model="ir.actions.act_window">
+      <field name="name">جميع الوجبات</field>
+      <field name="res_model">partner.meal</field>
+      <field name="view_mode">tree,kanban,form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          لا يوجد وجبات لإظهارها
+        </p>
+        <p>
+          اضغط علي زر انشاء ثم قم بملء الحقول وبعدها اضغط علي حفظ
+        </p>
+      </field>
+    </record>
+
+<!--    breakfast actions -->
+    <record id="braakfast_meal_action" model="ir.actions.act_window">
+      <field name="name">وجبات الفطور</field>
+      <field name="res_model">partner.meal</field>
+      <field name="view_mode">tree,kanban,form</field>
+      <field name="context">{
+        "search_default_filter_to_breakfast":1
+        }
+      </field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          لا يوجد وجبات لإظهارها
+        </p>
+        <p>
+          اضغط علي زر انشاء ثم قم بملء الحقول وبعدها اضغط علي حفظ
+        </p>
+      </field>
+    </record>
+<!--    lunch meal action-->
+    <record id="lunch_meal_action" model="ir.actions.act_window">
+      <field name="name">وجبات الغداء</field>
+      <field name="res_model">partner.meal</field>
+      <field name="view_mode">tree,kanban,form</field>
+      <field name="context">{
+        "search_default_filter_to_lunch":1
+        }
+      </field>
+            <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          لا يوجد وجبات لإظهارها
+        </p>
+        <p>
+          اضغط علي زر انشاء ثم قم بملء الحقول وبعدها اضغط علي حفظ
+        </p>
+      </field>
+    </record>
+
+<!--    dinner meal action -->
+    <record id="dinner_meal_action" model="ir.actions.act_window">
+      <field name="name">وجبات العشاء</field>
+      <field name="res_model">partner.meal</field>
+      <field name="view_mode">tree,kanban,form</field>
+      <field name="context">{
+        "search_default_filter_to_dinner":1
+        }
+      </field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          لا يوجد وجبات لإظهارها
+        </p>
+        <p>
+          اضغط علي زر انشاء ثم قم بملء الحقول وبعدها اضغط علي حفظ
+        </p>
+      </field>
+    </record>
+
+
+    <menuitem
+      name="وجباتي"
+      id="my_meal_root_menu"
+      />
+    <menuitem
+      name="وجباتي"
+      id="my_meal_partner_menu"
+      parent="my_meal_root_menu"
+      />
+    <menuitem
+      name="جميع الوجبات"
+      id="my_meal_all_meal_menu"
+      parent="my_meal_partner_menu"
+      action="all_meal_action"
+      />
+    <menuitem
+      name="وجبات الفطور"
+      id="my_meal_breakfast_menu"
+      parent="my_meal_partner_menu"
+      action="braakfast_meal_action"
+      />
+    <menuitem
+      name="وجبات الغداء"
+      id="my_meal_lunch_menu"
+      parent="my_meal_partner_menu"
+      action="lunch_meal_action"
+      />
+    <menuitem
+      name="وجبات العشاء"
+      id="my_meal_dinner_menu"
+      parent="my_meal_partner_menu"
+      action="dinner_meal_action"
+      />
+
+  </data>
+</odoo>
